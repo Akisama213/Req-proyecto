@@ -36,7 +36,7 @@
 
           </div>
           <q-uploader
-            url="http://localhost:4444/upload"
+            url="http://localhost:3000/documents/upload"
             label="Elija los documentos a subir"
             color="purple"
             dark
@@ -76,6 +76,10 @@ export default defineComponent({
     this.searchcopy = this.search.replace(/\s\s+/g, ' ');
     this.searchcopy = this.searchcopy.replace(/ /g, "_");
     console.log("Search: " + this.searchcopy);
+
+    this.$axios
+      .post()
+      .then
   },
   chooseFiles() {document.getElementById("fileUpload").click()}},
   name: 'IndexPage',

@@ -33,6 +33,7 @@ module.exports = async function (fastify, opts) {
     const files = request.raw.files;
     for(const fileIndex in files) {
         const file = files[fileIndex];
+        console.log(file);
         if(file.mimetype == 'text/plain') {
             const data = file.data.toString();
             const words = data.split(' ');
