@@ -1,10 +1,15 @@
 'use strict'
 
-const path = require('path')
-const AutoLoad = require('@fastify/autoload')
+const path = require('path');
+const AutoLoad = require('@fastify/autoload');
+const fileUpload = require('fastify-file-upload');
 
 module.exports = async function (fastify, opts) {
-  // Place here your custom code!
+  fastify.register(require('@fastify/postgres'), {
+    connectionString: 'postgresql://req:8Lw3JYo25WW4c5D8@192.168.0.209:5432/requerimentos'
+  })
+
+  fastify.register(fileUpload);
 
   // Do not touch the following lines
 

@@ -10,3 +10,5 @@ services:
       POSTGRES_DB: requerimentos
       POSTGRES_USER: req
       POSTGRES_PASSWORD: 8Lw3JYo25WW4c5D8
+
+#192.168.0.209

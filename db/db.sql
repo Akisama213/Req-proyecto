@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS t_users (
 
 CREATE TABLE IF NOT EXISTS t_indexes (
     id SERIAL PRIMARY KEY,
-    word INT NOT NULL
+    word VARCHAR(64) NOT NULL UNIQUE
 );
 
 -- t_documents_by_users
@@ -42,7 +42,8 @@ FOREIGN KEY (id_user) REFERENCES t_users(id) ON DELETE CASCADE;
 CREATE TABLE IF NOT EXISTS t_indexes_by_documents (
     id SERIAL PRIMARY KEY,
     id_index INT NOT NULL,
-    id_document INT NOT NULL
+    id_document INT NOT NULL,
+    weight INT NOT NULL
 );
 
 ALTER TABLE t_indexes_by_documents
