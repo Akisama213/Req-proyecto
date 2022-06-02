@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: requerimentos
+      POSTGRES_USER: req
+      POSTGRES_PASSWORD: 8Lw3JYo25WW4c5D8
