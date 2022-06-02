@@ -11,18 +11,19 @@ module.exports = async function (fastify, opts) {
         words.push(stem(word.replace(/[^a-zA-Z ]/g, "")).toLowerCase());
     }
 
-    let wordsQuery = `i.word = ${words[0]}`;
+    let wordsQuery = `i.word = '${words[0]}'`;
     for(let wordIndex=1; wordIndex<words.length; wordIndex++) {
-        
+        wordsQuery += ` OR i.word = '${words[wordIndex]}'`
     }
     const searchQuery = `SELECT d.title, d.location, SUM(ibd.weight) as weight
                          FROM t_documents d
                          LEFT JOIN t_indexes_by_documents ibd ON ibd.id_document = d.id
-                         LEFT JOIN t_indexes i ON i.id = idb.id_index
+                         LEFT JOIN t_indexes i ON i.id = ibd.id_index
                          WHERE ${wordsQuery}
-                         GROUP BY d.title
-                         ORDER BY weight DESC`;
-    return "holi"
+                         GROUP BY d.title, d.location
+                         ORDER BY weight DESC;`;
+    const searchResult = await fastify.pg.query(searchQuery);
+    reply.code(200).send(searchResult.rows);
   })
 
   fastify.post('/upload', async (request, reply) => {
@@ -32,7 +33,7 @@ module.exports = async function (fastify, opts) {
         if(file.mimetype == 'text/plain') {
             const data = file.data.toString();
             const words = data.split(' ');
-            const totalWords = 0;
+            let totalWords = 0;
             const wordRanking = {};
             for(const word of words) {
                 const stemWord = stem(word.replace(/[^a-zA-Z ]/g, "")).toLowerCase();
