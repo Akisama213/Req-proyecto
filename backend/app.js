@@ -9,6 +9,10 @@ module.exports = async function (fastify, opts) {
     connectionString: 'postgresql://req:8Lw3JYo25WW4c5D8@192.168.0.209:5432/requerimentos'
   })
 
+  fastify.register(require('@fastify/cors'), { 
+    origin: '*'
+  })
+
   fastify.register(fileUpload);
 
   // Do not touch the following lines

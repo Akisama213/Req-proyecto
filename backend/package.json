@@ -20,6 +20,7 @@
     "@fastify/sensible": "^4.0.0",
     "fastify": "^3.0.0",
     "fastify-cli": "^3.1.0",
+    "fastify-cors": "^6.1.0",
     "fastify-file-upload": "^4.0.0",
     "fastify-plugin": "^3.0.0",
     "pg": "^8.7.3",
