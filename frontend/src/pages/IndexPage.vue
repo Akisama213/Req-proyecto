@@ -59,7 +59,8 @@ import { QSpinnerFacebook, Loading } from 'quasar'
 export default defineComponent({
   data() {
     return {
-      search: ""
+      search: "",
+      searchcopy: ""
     };
   },
   methods: { press() {
@@ -72,6 +73,9 @@ export default defineComponent({
         messageColor: 'white',
         message: 'Buscando "' + this.search + '" en los archivos...'})
     }
+    this.searchcopy = this.search.replace(/\s\s+/g, ' ');
+    this.searchcopy = this.searchcopy.replace(/ /g, "_");
+    console.log("Search: " + this.searchcopy);
   },
   chooseFiles() {document.getElementById("fileUpload").click()}},
   name: 'IndexPage',
