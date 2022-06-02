@@ -22,9 +22,7 @@ module.exports = async function (fastify, opts) {
                          WHERE ${wordsQuery}
                          GROUP BY d.title, d.location
                          ORDER BY weight DESC;`;
-    console.log(searchQuery)
     const searchResult = await fastify.pg.query(searchQuery);
-    console.log(searchResult)
     for(const row of searchResult.rows) {
         row.data = String(fs.readFileSync(row.location));
     }
