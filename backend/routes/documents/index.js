@@ -10,7 +10,18 @@ module.exports = async function (fastify, opts) {
     for(const word of request.params.searchTerm.split('_')) {
         words.push(stem(word.replace(/[^a-zA-Z ]/g, "")).toLowerCase());
     }
-    
+
+    let wordsQuery = `i.word = ${words[0]}`;
+    for(let wordIndex=1; wordIndex<words.length; wordIndex++) {
+        
+    }
+    const searchQuery = `SELECT d.title, d.location, SUM(ibd.weight) as weight
+                         FROM t_documents d
+                         LEFT JOIN t_indexes_by_documents ibd ON ibd.id_document = d.id
+                         LEFT JOIN t_indexes i ON i.id = idb.id_index
+                         WHERE ${wordsQuery}
+                         GROUP BY d.title
+                         ORDER BY weight DESC`;
     return "holi"
   })
 
