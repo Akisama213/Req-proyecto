@@ -5,6 +5,13 @@ const fs = require('fs');
 const stem = require('stemr').stem;
 
 module.exports = async function (fastify, opts) {
+  fastify.get('/', async (request, reply) => {
+    const documentsQuery = `SElECT title, location
+                            FROM t_documents;`
+    const documentsResult = await fastify.pg.query(documentsQuery);
+    reply.code(200).send(documentsResult.rows);
+  })
+
   fastify.get('/find-by/:searchTerm', async function (request, reply) {
     const words = []
     for(const word of request.params.searchTerm.split('_')) {
