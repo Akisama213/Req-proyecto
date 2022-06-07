@@ -36,7 +36,7 @@
 
           </div>
           <q-uploader
-            url="http://localhost:3000/documents/upload"
+            url="http://127.0.0.1:3000/documents/upload"
             label="Elija los documentos a subir"
             color="purple"
             dark
@@ -48,38 +48,79 @@
           />
         </q-card>
 
+        <q-dialog v-model="searchComplete">
+          <q-layout view="lhh LpR lff" container style="height: 500px" class="bg-grey-3">
+            <q-virtual-scroll
+              style="max-height: 300px;"
+              :items="datos"
+              separator
+              v-slot="{ item, index }"
+            >
+              <q-item
+                :key="index"
+                dense
+              >
+                <q-item-section>
+                  <q-item-label>
+                    #{{ index }} - {{ item.title }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    Location: {{ item.location }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    Text: {{ item.data }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-virtual-scroll>
+          </q-layout>
+        </q-dialog>
+
     </q-parallax>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 import { QSpinnerFacebook, Loading } from 'quasar'
-
+import axios from 'axios';
 
 export default defineComponent({
   data() {
     return {
       search: "",
-      searchcopy: ""
+      searchcopy: "",
+      datos: [],
+      searchComplete: false
     };
   },
-  methods: { press() {
-    if(this.search) {
-      Loading.show({
-        spinner: QSpinnerFacebook,
-        spinnerColor: 'yellow',
-        spinnerSize: 140,
-        backgroundColor: 'purple',
-        messageColor: 'white',
-        message: 'Buscando "' + this.search + '" en los archivos...'})
-    }
-    this.searchcopy = this.search.replace(/\s\s+/g, ' ');
-    this.searchcopy = this.searchcopy.replace(/ /g, "_");
-    console.log("Search: " + this.searchcopy);
+  methods: { async press() {
+    const docs = await axios.get('http://127.0.0.1:3000/documents/')
+    .catch(function (error) {
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    }});
+    if (docs.data.length > 0) {
+      if(this.search) {
+        Loading.show({
+          spinner: QSpinnerFacebook,
+          spinnerColor: 'yellow',
+          spinnerSize: 140,
+          backgroundColor: 'purple',
+          messageColor: 'white',
+          message: 'Buscando "' + this.search + '" en los archivos...'})
+      }
+      this.searchcopy = this.search.replace(/\s\s+/g, ' ');
+      this.searchcopy = this.searchcopy.replace(/ /g, "_");
+      console.log("Search: " + this.searchcopy);
 
-    this.$axios
-      .post()
-      .then
+      const response = await axios.get('http://127.0.0.1:3000/documents/find-by/' + this.searchcopy);
+      console.log(response);
+      Loading.hide();
+      this.datos = response.data;
+      this.searchComplete = true;
+      }
   },
   chooseFiles() {document.getElementById("fileUpload").click()}},
   name: 'IndexPage',

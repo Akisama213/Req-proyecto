@@ -6,7 +6,7 @@ const stem = require('stemr').stem;
 
 module.exports = async function (fastify, opts) {
   fastify.get('/', async (request, reply) => {
-    const documentsQuery = `SElECT title, location
+    const documentsQuery = `SELECT title, location
                             FROM t_documents;`
     const documentsResult = await fastify.pg.query(documentsQuery);
     reply.code(200).send(documentsResult.rows);

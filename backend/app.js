@@ -6,11 +6,11 @@ const fileUpload = require('fastify-file-upload');
 
 module.exports = async function (fastify, opts) {
   fastify.register(require('@fastify/postgres'), {
-    connectionString: 'postgresql://req:8Lw3JYo25WW4c5D8@192.168.0.209:5432/requerimentos'
+    connectionString: 'postgresql://req:8Lw3JYo25WW4c5D8@127.0.0.1:5432/requerimentos'
   })
 
   fastify.register(require('@fastify/cors'), { 
-    origin: '*'
+    origin: true
   })
 
   fastify.register(fileUpload);
